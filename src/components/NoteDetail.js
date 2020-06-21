@@ -298,7 +298,7 @@ class NoteDetail extends Component {
         >
           <QRCode
             id='qrcode'
-            value={`${process.env.HOST}/${name}/${id}`}
+            value={`${process.env.REACT_APP_HOSTNAME}/${name}/${id}`}
             size={290}
             level={'H'}
             includeMargin={true}
