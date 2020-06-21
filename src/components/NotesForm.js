@@ -146,7 +146,7 @@ export class NotesForm extends Component {
             onChange={(e) => this.handleChangeFile(e)}
           />
         </div>
-        <button onClick={(e) => this.createNote(e)}>Create Note</button>
+        <button disabled={this.state.title ? false : true} onClick={(e) => this.createNote(e)}>Create Note</button>
       </section>
     );
   }
