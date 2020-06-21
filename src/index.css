@@ -99,6 +99,73 @@ main {
   padding: 15px;
 }
 
+.modal {
+  /*display: block; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 87px; /* Location of the box */
+  padding-bottom: 87px;
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(9, 11, 47, 0.43); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+  background: #ffffff;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.3);
+  border-radius: 4px;
+  margin: auto;
+  width: 290px;
+  padding-bottom: 10px;
+}
+
+/* The Close Button */
+.close {
+  margin: auto;
+  margin-right: 20px;
+  color: #d3d6ea;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.title-new-order {
+  width: 290px;
+  height: 45px;
+  background: #a6a7b7;
+  border-radius: 4px 4px 0px 0px;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 18px;
+  line-height: 21px;
+  display: flex;
+  align-items: center;
+  color: #ffffff;
+}
+
+.flex {
+  display: -webkit-box;
+  display: flex;
+}
+
+.flex-row {
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+          flex-direction: row;
+}
+
 @media screen and (min-width: 768px) {
   .notes {
     grid-template-columns: repeat(3, 1fr);

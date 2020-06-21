@@ -1,0 +1,15 @@
+{
+  "name": "dist",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.6f7cfd8c305d89ca83a2.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "path": "^0.12.7"
+  }
+}

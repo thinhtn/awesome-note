@@ -3,7 +3,9 @@ import * as firebase from 'firebase';
 import { withRouter } from 'react-router-dom';
 import Linkify from 'react-linkify';
 import EditIcon from '../assets/EditIcon';
+import AttachedIcon from '../assets/attached.png';
 import NotesForm from './NotesForm';
+import { storage } from '../firebase';
 
 class Notes extends Component {
   constructor(props) {
@@ -21,19 +23,19 @@ class Notes extends Component {
   }
 
   componentDidMount() {
+    console.log('Initialize Notes');
     this.name = this.props.match.params.name;
     this.db = firebase.database();
     this.listenForChange();
   }
 
   listenForChange() {
-    console.log('listenForChange');
     this.db.ref(this.name).on('child_added', (snapshot) => {
-      console.log('listenForChange child_added');
       let note = {
         id: snapshot.key,
         title: snapshot.val().title,
         note: snapshot.val().note,
+        files: snapshot.val().urls,
       };
 
       let notes = this.state.notes;
@@ -45,10 +47,9 @@ class Notes extends Component {
     });
 
     this.db.ref(this.name).on('child_changed', (snapshot) => {
-      console.log('listenForChange child_changed');
       let notes = this.state.notes;
       var foundIndex = notes.findIndex((x) => x.id === snapshot.key);
-      notes[foundIndex].note = snapshot.val().note;
+      notes[foundIndex] = snapshot.val();
 
       this.setState({
         notes: notes,
@@ -56,7 +57,6 @@ class Notes extends Component {
     });
 
     this.db.ref(this.name).on('child_removed', (snapshot) => {
-      console.log('listenForChange child_removed');
       let notes = this.state.notes;
       notes = notes.filter((note) => note.id !== snapshot.key);
 
@@ -74,11 +74,13 @@ class Notes extends Component {
     firebase.database().ref(this.name).child(id).update();
   }
 
-  handleEdit(id) {
+  handleEdit(id, note, title) {
     let newEdit = this.state.isEdit;
     this.setState({
       isEdit: !newEdit,
       chosenId: id,
+      note: note,
+      title: title,
     });
   }
 
@@ -94,11 +96,10 @@ class Notes extends Component {
   }
 
   handleUpdate(id) {
-    firebase
-      .database()
-      .ref(this.name)
-      .child(id)
-      .update({ note: this.state.note });
+    firebase.database().ref(this.name).child(id).update({
+      title: this.state.title,
+      note: this.state.note,
+    });
     this.setState({
       isEdit: false,
     });
@@ -120,14 +121,34 @@ class Notes extends Component {
             this.state.notes.map((note) => (
               <div className='note' key={note.id}>
                 <div className='note-title'>
-                  <h3 onClick={() => this.handleShowDetail(note.id)}>
-                    {note.title}
-                  </h3>
+                  {this.state.isEdit && this.state.chosenId === note.id ? (
+                    <input
+                      type='text'
+                      value={this.state.title}
+                      onChange={(evt, note) =>
+                        this.onChangeHandler(evt, 'title', note)
+                      }
+                    />
+                  ) : (
+                    <h3 onClick={() => this.handleShowDetail(note.id)}>
+                      {note.title}
+                    </h3>
+                  )}
+
+                  {note.files && note.files[0] !== '' ? (
+                    <img
+                      src={AttachedIcon}
+                      alt='attached'
+                      style={{ width: '30px', height: '30px' }}
+                    />
+                  ) : (
+                    ''
+                  )}
                   <EditIcon
                     className='remove'
                     width='34'
                     height='34'
-                    onClick={() => this.handleEdit(note.id)}
+                    onClick={() => this.handleEdit(note.id, note.note, note.title)}
                   />
                   <div
                     className='remove'
@@ -141,13 +162,18 @@ class Notes extends Component {
                     <div>
                       <input
                         type='text'
-                        value={this.state.note || note.note}
+                        value={this.state.note}
                         onChange={(evt, note) =>
                           this.onChangeHandler(evt, 'note', note)
                         }
                       />
                       <div>
-                        <button onClick={() => this.handleUpdate(note.id)}>
+                        <button
+                          disabled={
+                            note.title === this.state.title && note.note === this.state.note ? true : false
+                          }
+                          onClick={() => this.handleUpdate(note.id)}
+                        >
                           Save
                         </button>
                         <button onClick={this.handleCancel}>Cancel</button>

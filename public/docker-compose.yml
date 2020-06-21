@@ -1,0 +1,13 @@
+# Use postgres/123456 user/password credentials
+version: '3.1'
+
+services:
+  webapp:
+    build: .  
+    # image: thinhtrantpp/authentify-fe:v2.0
+    ports:
+      - 8081:8080
+    command: npm start
+    environment:
+      - NODE_ENV=production
+    container_name: authentify-fe
