@@ -11,4 +11,5 @@ router.get('*',(req,res) => {
   });
 //add the router
 app.use('/', router);
-app.listen(8080);
+const PORT = process.env.PORT || 3000;
+app.listen(PORT);
