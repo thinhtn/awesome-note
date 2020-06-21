@@ -4,10 +4,10 @@ version: '3.1'
 services:
   webapp:
     build: .  
-    # image: thinhtrantpp/authentify-fe:v2.0
+    # image: thinh1611/public-note:v1.0
     ports:
       - 8081:8080
     command: npm start
     environment:
       - NODE_ENV=production
-    container_name: authentify-fe
+    container_name: public-note
