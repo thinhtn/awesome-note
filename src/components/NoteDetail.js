@@ -16,7 +16,7 @@ class NoteDetail extends Component {
       displayEditLot: 'none',
       files: [],
       fileNames: [],
-      newFiles: []
+      newFiles: [],
     };
 
     this.handleBack = this.handleBack.bind(this);
@@ -36,25 +36,27 @@ class NoteDetail extends Component {
       .ref(this.name + '/' + this.id)
       .on('value', (snapshot) => {
         const noteObj = snapshot.val();
-        localStorage.setItem('title', noteObj.title);
-        localStorage.setItem('note', noteObj.note);
-        localStorage.setItem('files', JSON.stringify(noteObj.urls));
-        console.log('noteObj.urls :>> ', noteObj.urls);
-        let fileListRaw = noteObj.urls;
         let fileList = [];
-        if (fileListRaw && fileListRaw.length > 0) {
-          let regex = /%2F(.*?)\?alt/;
-          for (let i = 0; i < fileListRaw.length; i++) {
-            let fileName = fileListRaw[i].match(regex);
-            fileList.push(decodeURI(fileName[1]));
+        if (noteObj != null) {
+          localStorage.setItem('title', noteObj.title);
+          localStorage.setItem('note', noteObj.note);
+          localStorage.setItem('files', JSON.stringify(noteObj.urls));
+          console.log('noteObj.urls :>> ', noteObj.urls);
+          let fileListRaw = noteObj.urls;
+          if (fileListRaw && fileListRaw.length > 0) {
+            let regex = /%2F(.*?)\?alt/;
+            for (let i = 0; i < fileListRaw.length; i++) {
+              let fileName = fileListRaw[i].match(regex);
+              fileList.push(decodeURI(fileName[1]));
+            }
           }
         }
 
         this.setState({
           id: snapshot.key,
-          title: noteObj.title,
-          note: noteObj.note,
-          files: noteObj.urls,
+          title: noteObj ? noteObj.title : '',
+          note: noteObj ? noteObj.note : '',
+          files: noteObj ? noteObj.urls : '',
           fileNames: fileList,
           inputKey: 1,
         });
@@ -99,6 +101,8 @@ class NoteDetail extends Component {
   handleCancel() {
     this.setState({
       isEdit: false,
+      title: localStorage.getItem('title'),
+      note: localStorage.getItem('note'),
     });
   }
 
@@ -231,8 +235,9 @@ class NoteDetail extends Component {
             <div>
               <button
                 disabled={
-                  localStorage.getItem('title') === this.state.title &&
-                  localStorage.getItem('note') === this.state.note
+                  this.state.title === '' ||
+                  (localStorage.getItem('title') === this.state.title &&
+                    localStorage.getItem('note') === this.state.note)
                     ? true
                     : false
                 }
@@ -278,11 +283,7 @@ class NoteDetail extends Component {
               this.state.files.map((e, i) => {
                 return (
                   <li key={i}>
-                    {e ? (
-                      <a href={e}>{this.state.fileNames[i]}</a>
-                    ) : (
-                      null
-                    )}
+                    {e ? <a href={e}>{this.state.fileNames[i]}</a> : null}
                   </li>
                 );
               })}

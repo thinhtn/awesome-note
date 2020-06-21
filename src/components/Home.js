@@ -23,6 +23,15 @@ function Home(props) {
         onChange={(evt) => onChangeHandler(evt, 'name')}
       />
       <button onClick={handleClick}>Go</button>
+      <div style={{marginTop: "30px"}}>
+        How to use?
+        <ul>
+          <li>Type the name of your note.</li>
+          <li>Click "Go" button.</li>
+          <li>Create your own notes.</li>
+          <li>Share with other devices by above steps on the devices or use QRcode inside each note.</li>
+        </ul>
+      </div>
     </div>
   );
 }

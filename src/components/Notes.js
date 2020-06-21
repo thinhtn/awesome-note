@@ -148,7 +148,9 @@ class Notes extends Component {
                     className='remove'
                     width='34'
                     height='34'
-                    onClick={() => this.handleEdit(note.id, note.note, note.title)}
+                    onClick={() =>
+                      this.handleEdit(note.id, note.note, note.title)
+                    }
                   />
                   <div
                     className='remove'
@@ -170,7 +172,11 @@ class Notes extends Component {
                       <div>
                         <button
                           disabled={
-                            note.title === this.state.title && note.note === this.state.note ? true : false
+                            this.state.title === '' ||
+                            (note.title === this.state.title &&
+                              note.note === this.state.note)
+                              ? true
+                              : false
                           }
                           onClick={() => this.handleUpdate(note.id)}
                         >
