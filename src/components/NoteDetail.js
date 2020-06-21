@@ -3,7 +3,6 @@ import { withRouter } from 'react-router-dom';
 import * as firebase from 'firebase';
 import QRCode from 'qrcode.react';
 import Linkify from 'react-linkify';
-import { API_HOST } from '../configs/configs';
 import ModalComponent from './ModalComponent';
 
 class NoteDetail extends Component {
@@ -299,7 +298,7 @@ class NoteDetail extends Component {
         >
           <QRCode
             id='qrcode'
-            value={`${API_HOST}/${name}/${id}`}
+            value={`${process.env.HOST}/${name}/${id}`}
             size={290}
             level={'H'}
             includeMargin={true}
