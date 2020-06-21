@@ -1,6 +1,9 @@
 import firebase from 'firebase/app';
 import 'firebase/storage';
+require('dotenv').config();
 
+console.log('API_KEY :>> ', process.env.API_KEY);
+console.log('APP_ID :>> ', process.env.APP_ID);
 // Your web app's Firebase configuration
 var firebaseConfig = {
   apiKey: process.env.API_KEY,

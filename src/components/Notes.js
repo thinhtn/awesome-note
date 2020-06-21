@@ -24,8 +24,6 @@ class Notes extends Component {
 
   componentDidMount() {
     console.log('Initialize Notes');
-    console.log('API_KEY :>> ', process.env.API_KEY);
-    console.log('APP_ID :>> ', process.env.APP_ID);
     this.name = this.props.match.params.name;
     this.db = firebase.database();
     this.listenForChange();
